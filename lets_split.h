@@ -9,6 +9,8 @@
     #include "custom.h"
 #elif KEYBOARD_lets_split_sockets
     #include "sockets.h"
+#elif KEYBOARD_keeb_custom
+    #include "custom.h"
 #endif
 
 

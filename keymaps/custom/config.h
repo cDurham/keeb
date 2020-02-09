@@ -11,9 +11,11 @@
 #define TAPPING_TERM 175
 
 // Auto Shift settings
-// #define AUTO_SHIFT_TIMEOUT 165
+#define AUTO_SHIFT_TIMEOUT 165
 /* By default, Auto Shift is disabled for any key
  * press that is accompanied by one or more modifiers.
  * DEFAULT STATE IS REMOVED (or commented out)
  */
-// #define AUTO_SHIFT_MODIFIERS
+#define AUTO_SHIFT_MODIFIERS
+
+#define LEADER_TIMEOUT 300
