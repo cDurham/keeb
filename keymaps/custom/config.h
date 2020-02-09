@@ -18,4 +18,4 @@
  */
 #define AUTO_SHIFT_MODIFIERS
 
-#define LEADER_TIMEOUT 300
+// #define LEADER_TIMEOUT 300
