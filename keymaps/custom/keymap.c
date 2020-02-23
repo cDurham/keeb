@@ -6,9 +6,9 @@
 // Layer names don't all need to be of the same length, obviously, and you can also skip them
 // entirely and just use numbers.
 #define _QWERTY 0
-#define _QGMLWB 3
-#define _LOWER 1
-#define _RAISE 2
+#define _QGMLWB 1
+#define _LOWER 2
+#define _RAISE 3
 #define _TEXT 4
 #define _ADJUST 16
 
@@ -52,8 +52,8 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 
 #define LOWER  MO(_LOWER)
 #define RAISE  MO(_RAISE)
-#define ADJUST MO(_ADJUST)
 #define TEXT MO(_TEXT)
+#define ADJUST MO(_ADJUST)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Qwerty
@@ -86,7 +86,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |Adjust| Ctrl | Alt  | GUI  |Lower |Space |Space |Raise | Left | Down |  Up  |Right |
  * `-----------------------------------------------------------------------------------'
  * ctlesc - left control when held, esc when tapped
- * 
  */
 [_QGMLWB] = LAYOUT_ortho_4x12(
    KC_TAB,  KC_Q,    KC_G,    KC_M,    KC_L,    KC_W,    KC_B,    KC_Y,    KC_U,    KC_V,    KC_SCLN, TD(BSPC_DEL), \
@@ -140,7 +139,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |             |      |      |      |      |      |
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_TEXT] =  LAYOUT_ortho_4x12( \
@@ -158,7 +157,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |             |      |      |      |      |      |
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_ADJUST] =  LAYOUT_ortho_4x12( \
@@ -166,7 +165,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY, QGMLWB, PRINT_QGMLWB,  _______, _______, \
   _______, _______, _______, _______, _______, _______, _______, _______, _______, PRINT_LOWER, _______, _______, \
   _______, _______, _______, _______, _______, _______, _______, _______, _______, PRINT_RAISE, _______, _______ \
-)
+),
 };
 
 // LEADER_EXTERNS();
@@ -196,6 +195,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // };
 
 layer_state_t layer_state_set_user(layer_state_t state) {
+  set_single_persistent_default_layer(_QGMLWB);
   return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
 };
 
@@ -230,11 +230,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case PRINT_RAISE:
     if (record->event.pressed) {
       SEND_STRING("|  `   |      |      |      |      |      |      |   -  |   =  |   [  |   ]  |  Del |\n\
- |  Del |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  \   |\n\
- |      |      |      |      |      |      |      |      |      |      |      |      |\n\
- |      |      |      |      |      |             |      | Next | Vol- | Vol+ | Play |");
+|  Del |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  \\   |\n\
+|      |      |      |      |      |      |      |      |      |      |      |      |\n\
+|      |      |      |      |      |      |      |      | Next | Vol- | Vol+ | Play |");
     }
     return false;
-  }
+  };
   return true;
 };
