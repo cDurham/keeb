@@ -1,4 +1,4 @@
-Let's Split
+Keeb
 ======
 
 This readme and most of the code are from https://github.com/ahtn/tmk_keyboard/
@@ -6,12 +6,9 @@ This readme and most of the code are from https://github.com/ahtn/tmk_keyboard/
 Split keyboard firmware for Arduino Pro Micro or other ATmega32u4
 based boards.
 
-**Hardware files for the Let's Split are now stored at http://qmk.fm/lets_split/**
-**Hardware files for the sockets version can be found at https://github.com/dumle29/let-s-Split-v2/tree/socket-reverseable**
-
 ## Build Guide
 
-A build guide for putting together the Let's Split v2 can be found here: [An Overly Verbose Guide to Building a Let's Split Keyboard](https://github.com/nicinabox/lets-split-guide)
+A build guide for putting together the Keeb can be found here: [An Overly Verbose Guide to Building a Let's Split Keyboard](https://github.com/nicinabox/lets-split-guide)
 
 There is additional information there about flashing and adding RGB underglow.
 
@@ -19,35 +16,15 @@ A build guide for putting together the sockets version can be found here: *Guide
 
 ## First Time Setup
 
-Download or clone the `qmk_firmware` repo and navigate to its top level directory. Once your build environment is setup, you'll be able to generate the default .hex using:
+Download or clone the `qmk_firmware` repo and navigate to its top level directory. Download and add this repo to 'qmk_firmware/keyboards/'. Once your build environment is setup, you'll be able to generate the default .hex using:
 
 ```
-$ make lets_split/rev2:default
+$ make keeb/custom:custom:flash
 ```
 
-You will see a lot of output and if everything worked correctly you will see the built hex file:
-
-```
-lets_split_rev2_default.hex
-```
-
-If you would like to use one of the alternative keymaps, or create your own, copy one of the existing [keymaps](keymaps/) and run make like so:
-
-
-```
-$ make lets_split/rev2:YOUR_KEYMAP_NAME
-```
-
-If everything worked correctly you will see a file:
-
-```
-lets_split_rev2_YOUR_KEYMAP_NAME.hex
-```
+You will see a lot of output and if everything worked correctly you will see a completion message.
 
 For more information on customizing keymaps, take a look at the primary documentation for [Customizing Your Keymap](/docs/faq_keymap.md) in the main readme.md.
-
-### Let's split 1.0
-If you have a first generation Let's Split you will need to use the revision 1 code. To do so, use `rev1` in all your commands instead.
 
 Features
 --------
@@ -119,7 +96,7 @@ not be very difficult to adapt it to support more if required.
 Flashing
 -------
 From the top level `qmk_firmware` directory run `make KEYBOARD:KEYMAP:avrdude` for automatic serial port resolution and flashing.
-Example: `make lets_split/rev2:default:avrdude`
+Example: `make keeb/custom:custom:flash`
 
 
 Choosing which board to plug the USB cable into (choosing Master)
