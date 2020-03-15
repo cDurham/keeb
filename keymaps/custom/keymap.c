@@ -18,6 +18,7 @@ enum custom_keycodes {
   PRINT_QGMLWB,
   PRINT_LOWER,
   PRINT_RAISE,
+  DBL_CLICK,
 };
 
 /**
@@ -115,9 +116,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Raise
  * ,-----------------------------------------------------------------------------------.
- * |  `   |      |      |      |      |      |      |   -  |   =  |   [  |   ]  |  Del |
+ * |  `   | HOME |  Up  |  End |      |      |      |   -  |   =  |   [  |   ]  |  Del |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |  Del |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  \   |
+ * |      | Left | Down |Right | 2L🐁 |      |      |      |      |      |      |  \   |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -125,8 +126,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_RAISE] = LAYOUT_ortho_4x12( \
-  KC_GRV, _______, _______, _______, _______, _______, _______, KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSPC, \
-  _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,   KC_8,     KC_9,    KC_0,    KC_BSLS, \
+  KC_GRV, KC_HOME, KC_UP, KC_END, _______, _______, _______, KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSPC, \
+  _______, KC_LEFT, KC_DOWN, KC_RGHT, DBL_CLICK, _______, _______, _______, _______, _______, _______, KC_BSLS, \
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
   _______, _______, _______, _______, _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY \
 ),
@@ -163,7 +164,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_ADJUST] =  LAYOUT_ortho_4x12( \
   _______, TD(TD_RESET),_______, _______, _______, _______, _______, _______, _______, _______, _______, TD(BSPC_DEL), \
   _______, _______, _______, AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY, QGMLWB, PRINT_QGMLWB,  _______, _______, \
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, PRINT_LOWER, _______, _______, \
+  _______, KC_ASRP, KC_ASUP, KC_ASDN, _______, _______, _______, _______, _______, PRINT_LOWER, _______, _______, \
   _______, _______, _______, _______, _______, _______, _______, _______, _______, PRINT_RAISE, _______, _______ \
 ),
 };
@@ -201,6 +202,12 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
+    case DBL_CLICK:
+      if (record->event.pressed) {
+          register_code16(KC_BTN1);
+          unregister_code16(KC_BTN1);
+      }
+      return false;
     case QWERTY:
       if (record->event.pressed) {
         set_single_persistent_default_layer(_QWERTY);
