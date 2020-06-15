@@ -1,6 +1,9 @@
 # MCU name
 MCU = atmega32u4
 
+F_CPU = 8000000
+F_USB = 8000000
+
 # Bootloader selection
 #   Pro Micro    caterina
 BOOTLOADER = caterina

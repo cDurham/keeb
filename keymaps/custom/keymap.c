@@ -115,19 +115,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Lower
  * ,-----------------------------------------------------------------------------------.
- * |  `   |      | HOME |  Up  |  End |      |      |   -  |   =  |   [  |   ]  |  Del |
+ * |  `   |      | cHome|  Up  |  End |      |      |   -  |   =  |   [  |   ]  |  Del |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      | Lshft| Left | Down | Right| Undo |      |      |      |      |      |  \   |
+ * | lAlt | Lshft| Left | Down | Right| Undo |      | LCTL |      |      |      |  \   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |  CUT | COPY | PSTE |      | Redo |      |      |      |      |      |      |D
+ * |      |      |  CUT | COPY | PSTE | Redo |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |      |             |      | Next | Vol- | Vol+ | Play |
  * `-----------------------------------------------------------------------------------'
+ * cHome cerl when Held, Home when tapped
  */
 [_LOWER] = LAYOUT_ortho_4x12( \
-  KC_GRV,  _______, KC_HOME, KC_UP,    KC_END,  _______, _______, KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSPC, \
-  _______, KC_LSFT, KC_LEFT, KC_DOWN,  KC_RGHT, KC_UNDO, _______, _______, _______, _______, _______, KC_BSLS, \
-  _______, LCTL(KC_X), LCTL(KC_C), LCTL(KC_V), _______, KC_AGIN, _______, _______, _______, _______, _______, _______, \
+  KC_GRV,  _______, CTL_T(KC_HOME), KC_UP,    KC_END,  _______, _______, KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSPC, \
+  KC_LALT, KC_LSFT, KC_LEFT, KC_DOWN,  KC_RGHT, LCTL(KC_Z), _______, KC_LCTL, _______, _______, _______, KC_BSLS, \
+  _______, _______, LCTL(KC_X), LCTL(KC_C), LCTL(KC_V), LCTL(KC_Y), _______, _______, _______, _______, _______, _______, \
   _______, _______, _______, _______,  _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY \
 ),
 
@@ -169,32 +170,32 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 LEADER_EXTERNS();
-​
 void matrix_scan_user(void) {
-  LEADER_DICTIONARY() {
-    leading = false;
-    leader_end();
-​
-    SEQ_ONE_KEY(KC_F) {
-      // Anything you can do in a macro.
-      SEND_STRING("QMK is awesome.");
+    LEADER_DICTIONARY() {
+        leading = false;
+        leader_end();
+
+        SEQ_ONE_KEY(KC_F) {
+            // Anything you can do in a macro.
+            SEND_STRING("QMK is awesome.");
+        }
+            SEQ_TWO_KEYS(KC_D, KC_D) {
+            SEND_STRING(SS_LCTL("a") SS_LCTL("c"));
+        }
+            SEQ_TWO_KEYS(KC_Z, KC_Z) {
+            SEND_STRING(SS_LCTL("K") SS_LCTL("2"));
+             // collapse code for vscode
+        }
+            SEQ THREE_KEYS(KC_D, KC_D, KC_S) {
+            SEND_STRING("https://start.duckduckgo.com\n");
+        }
+            SEQ_TWO_KEYS(KC_A, KC_S) {
+            register_code(KC_LGUI);
+            register_code(KC_S);
+            unregister_code(KC_S);
+            unregister_code(KC_LGUI);
+        }
     }
-    SEQ_TWO_KEYS(KC_D, KC_D) {
-      SEND_STRING(SS_LCTL("a") SS_LCTL("c"));
-    }
-    SEQ_TWO_KEYS(KC_Z, KC_Z) {
-      SEND_STRING(SS_LCTL("K") SS_LCTL("2")); // collapse code for vscode
-    }
-    SEQ_THREE_KEYS(KC_D, KC_D, KC_S) {
-      SEND_STRING("https://start.duckduckgo.com\n");
-    }
-    SEQ_TWO_KEYS(KC_A, KC_S) {
-      register_code(KC_LGUI);
-      register_code(KC_S);
-      unregister_code(KC_S);
-      unregister_code(KC_LGUI);
-    }
-  }
 };
 
 layer_state_t layer_state_set_user(layer_state_t state) {
@@ -220,30 +221,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         set_single_persistent_default_layer(_QGMLWB);
       }
       return false;
-    case PRINT_QGMLWB:
-    if (record->event.pressed) {
-      SEND_STRING("| Tab  |   Q  |   G  |   M  |   L  |   W  |  |   B  |   Y  |   U  |   V  |   ;  | Bksp |\n\
-| Esc  |   D  |   S  |   T  |   N  |   R  |  |   I  |   A  |   E  |   O  |   H  |  \"   |\n\
-| Shift|   Z  |   X  |   C  |   F  |   J  |  |   K  |   P  |   ,  |   .  |   /  |Enter |\n\
-|Adjust| Ctrl | Alt  | GUI  |Lower |Space |  |Space |Raise | Left | Down |  Up  |Right |");
-      }
-      return false;
-    case PRINT_LOWER:
-    if (record->event.pressed) {
-      SEND_STRING("|   ~  |      |      |      |      |      |      |   _  |   +  |   {  |   }  | Del  |\n\
-|  Del |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  |  |   |\n\
-|  F1  |  F2  |  F3  |  F4 |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 | F11  |  F12 |\n\
-|      |      |      |      |      |      |       |     | Next | Vol- | Vol+ | Play |");
-    }
-    return false;
-    case PRINT_RAISE:
-    if (record->event.pressed) {
-      SEND_STRING("|  `   |      |      |      |      |      |      |   -  |   =  |   [  |   ]  |  Del |\n\
-|  Del |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  \\   |\n\
-|      |      |      |      |      |      |      |      |      |      |      |      |\n\
-|      |      |      |      |      |      |      |      | Next | Vol- | Vol+ | Play |");
-    }
-    return false;
   };
   return true;
 };

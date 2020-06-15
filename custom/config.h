@@ -36,4 +36,10 @@
 
 #define TAPPING_TERM 175
 
+/**
+ * resets the timeout after each key is tapped
+ */
+#define LEADER_PER_KEY_TIMING
 #define LEADER_TIMEOUT 300
+
+#define DIODE_DIRECTION COL2ROW
