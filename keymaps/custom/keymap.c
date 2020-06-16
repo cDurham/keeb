@@ -186,7 +186,7 @@ void matrix_scan_user(void) {
             SEND_STRING(SS_LCTL("K") SS_LCTL("2"));
              // collapse code for vscode
         }
-            SEQ THREE_KEYS(KC_D, KC_D, KC_S) {
+            SEQ_THREE_KEYS(KC_D, KC_D, KC_S) {
             SEND_STRING("https://start.duckduckgo.com\n");
         }
             SEQ_TWO_KEYS(KC_A, KC_S) {
