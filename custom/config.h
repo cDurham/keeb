@@ -15,15 +15,16 @@
 
 // wiring of each half
 // rows run top to botttom, cols run left to right
+#define DIODE_DIRECTION COL2ROW
 
 // right hand: A0 A1 A2 A3 A4 A5
 #define MATRIX_COL_PINS_RIGHT { F7, F6, F5, F4, F1, F0 }
-// 9 10 6 5
+// row pins: 9 10 6 5
 #define MATRIX_ROW_PINS_RIGHT { B5, B6, D7, C6 }
 
 // left hand: A0 A1 A2 A3 A5 A4
 #define MATRIX_COL_PINS { F7, F6, F5, F4, F0, F1 }
-//9 6 10 5
+// row pins: 9 6 10 5
 #define MATRIX_ROW_PINS { B5, D7, B6, C6 }
 
 /* Set 0 if debouncing isn't needed */
@@ -33,13 +34,3 @@
 #define LOCKING_SUPPORT_ENABLE
 /* Locking resynchronize hack */
 #define LOCKING_RESYNC_ENABLE
-
-#define TAPPING_TERM 175
-
-/**
- * resets the timeout after each key is tapped
- */
-#define LEADER_PER_KEY_TIMING
-#define LEADER_TIMEOUT 300
-
-#define DIODE_DIRECTION COL2ROW

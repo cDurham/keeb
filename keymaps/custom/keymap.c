@@ -1,5 +1,5 @@
 #include QMK_KEYBOARD_H
-#include "quantum.h"
+// #include "quantum.h"
 
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
@@ -9,16 +9,12 @@
 #define _QGMLWB 1
 #define _LOWER 2
 #define _RAISE 3
-#define _TEXT 4
 #define _ADJUST 16
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
   QGMLWB,
-  PRINT_QGMLWB,
-  PRINT_LOWER,
-  PRINT_RAISE,
-  DBL_CLICK,
+  MY_HASH,
 };
 
 /**
@@ -44,9 +40,6 @@ void safe_reset(qk_tap_dance_state_t *state, void *user_data) {
  * NOTE: tap dance keys will no longer activate AUTO_SHIFT
  */
 qk_tap_dance_action_t tap_dance_actions[] = {
-  [SPC_DEL] = ACTION_TAP_DANCE_DOUBLE(KC_SPC, KC_DEL),
-  [BSPC_DEL] = ACTION_TAP_DANCE_DOUBLE(KC_BSPC, KC_DEL),
-  [SPC_BKS] = ACTION_TAP_DANCE_DOUBLE(KC_SPC, KC_BSPC),
   [F4_ALT] = ACTION_TAP_DANCE_DOUBLE(KC_F4, LALT(KC_F4)),
   [TD_RESET] = ACTION_TAP_DANCE_FN(safe_reset)
 };
@@ -58,7 +51,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Qwerty
- * ,-----------------------------------------------------------------------------------.
+ * ,---------------------------------------s--------------------------------------------.
  * | Tab  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  | Bksp |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * |ctlesc|   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  "   |
@@ -70,10 +63,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ctlesc - left control when held, esc when tapped
  */
 [_QWERTY] = LAYOUT_ortho_4x12(
-   KC_TAB,  KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, TD(BSPC_DEL), \
+   KC_TAB,  KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_DEL, \
    LCTL_T(KC_ESC),  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, \
    KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M, KC_COMM, KC_DOT,  KC_SLSH, KC_ENT, \
-   TEXT,  KC_LCTL, KC_LALT, KC_LGUI, LOWER, TD(SPC_DEL),  TD(SPC_BKS),  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
+   _______,  KC_LCTL, KC_LALT, KC_LGUI, LOWER, KC_SPC,  KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
 ),
 
 /* QGMLWB
@@ -88,11 +81,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  * ctlesc - left control when held, esc when tapped
  */
+#define SFTENT MT(MOD_RSFT, KC_ENT)
+#define SFT_N MT(MOD_LSFT, KC_N)
+#define CTRL_T MT(MOD_LCTL, KC_T)
+#define ALT_S MT(MOD_LALT, KC_S)
+#define LOW_SPC LT(LOWER, KC_SPC)
+#define HI_SPC LT(RAISE, KC_SPC)
+#define SFT_A MT(MOD_RSFT, KC_A)
+#define CTL_E MT(MOD_RCTL, KC_E)
+#define ALT_O MT(MOD_RALT, KC_O)
 [_QGMLWB] = LAYOUT_ortho_4x12(
-   KC_TAB,  KC_Q,    KC_G,    KC_M,    KC_L,    KC_W,    KC_B,    KC_Y,    KC_U,    KC_V,    KC_SCLN, KC_BSPC, \
-   LCTL_T(KC_ESC),  KC_D,    KC_S,    KC_T,    KC_N,    KC_R,    KC_I,    KC_A,    KC_E,    KC_O,    KC_H, KC_QUOT, \
-   KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_F,    KC_J,    KC_K,    KC_P,    KC_COMM, KC_DOT,  KC_SLSH, KC_ENT , \
-   KC_LEAD,  KC_LCTL, KC_LALT, KC_LGUI, LOWER, TD(SPC_DEL),  TD(SPC_BKS),  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
+   KC_TAB,  KC_Q,    KC_G,    KC_M,    KC_L,    KC_W,    KC_B,   KC_Y,    KC_U,    KC_V,    KC_SCLN, KC_BSPC, \
+   KC_ESC,  KC_D,    ALT_S,   CTRL_T,  SFT_N,   KC_R,    KC_I,   SFT_A,   CTL_E,   ALT_O,   KC_H,    KC_QUOT, \
+   KC_LSPO, KC_Z,    KC_X,    KC_C,    KC_F,    KC_J,    KC_K,   KC_P,    KC_COMM, KC_DOT,  KC_SLSH, SFTENT, \
+   KC_LEAD, KC_LCTL, KC_LALT, KC_LGUI, KC_DEL, LOW_SPC, HI_SPC,  MY_HASH, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
 ),
 
 /* Raise
@@ -123,7 +125,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |      |             |      | Next | Vol- | Vol+ | Play |
  * `-----------------------------------------------------------------------------------'
- * cHome cerl when Held, Home when tapped
+ * CTRL when Held, Home when tapped
  */
 [_LOWER] = LAYOUT_ortho_4x12( \
   KC_GRV,  _______, CTL_T(KC_HOME), KC_UP,    KC_END,  _______, _______, KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSPC, \
@@ -145,57 +147,39 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_ADJUST] =  LAYOUT_ortho_4x12( \
   _______, TD(TD_RESET),_______, _______, _______, _______, _______, _______, _______, _______, _______, TD(BSPC_DEL), \
-  _______, _______, _______, AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY, QGMLWB, PRINT_QGMLWB,  _______, _______, \
-  _______, KC_ASRP, KC_ASUP, KC_ASDN, _______, _______, _______, _______, _______, PRINT_LOWER, _______, _______, \
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, PRINT_RAISE, _______, _______ \
-),
-
-/* Text
- * ,-----------------------------------------------------------------------------------.
- * |      | TD_RESET|      |      |      |      |      |      |      |      |      |  Del |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      | COPY |      |Aud on|Audoff|AGnorm|AGswap|Qwerty|QGMLWB|      |      |      |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * `-----------------------------------------------------------------------------------'
- */
-[_TEXT] =  LAYOUT_ortho_4x12( \
-  _______, TD(TD_RESET),_______, _______, _______, _______, _______, _______, _______, _______, _______, TD(BSPC_DEL), \
-  _______, KC_COPY, _______, AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY, QGMLWB, _______,  _______, _______, \
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
+  _______, _______, _______, AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY, QGMLWB, _______,  _______, _______, \
+  _______, KC_ASRP, KC_ASUP, KC_ASDN, _______, _______, _______, _______, _______, _______, _______, _______, \
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ \
 ),
 };
 
 LEADER_EXTERNS();
 void matrix_scan_user(void) {
-    LEADER_DICTIONARY() {
-        leading = false;
-        leader_end();
+  LEADER_DICTIONARY() {
+    leading = false;
+    leader_end();
 
-        SEQ_ONE_KEY(KC_F) {
-            // Anything you can do in a macro.
-            SEND_STRING("QMK is awesome.");
-        }
-            SEQ_TWO_KEYS(KC_D, KC_D) {
-            SEND_STRING(SS_LCTL("a") SS_LCTL("c"));
-        }
-            SEQ_TWO_KEYS(KC_Z, KC_Z) {
-            SEND_STRING(SS_LCTL("K") SS_LCTL("2"));
-             // collapse code for vscode
-        }
-            SEQ_THREE_KEYS(KC_D, KC_D, KC_S) {
-            SEND_STRING("https://start.duckduckgo.com\n");
-        }
-            SEQ_TWO_KEYS(KC_A, KC_S) {
-            register_code(KC_LGUI);
-            register_code(KC_S);
-            unregister_code(KC_S);
-            unregister_code(KC_LGUI);
-        }
+    SEQ_ONE_KEY(KC_F) {
+        // Anything you can do in a macro.
+        SEND_STRING("QMK is awesome.");
     }
+    SEQ_TWO_KEYS(KC_D, KC_D) {
+        SEND_STRING(SS_LCTL("a") SS_LCTL("c"));
+    }
+    SEQ_TWO_KEYS(KC_Z, KC_Z) {
+        SEND_STRING(SS_LCTL("K") SS_LCTL("2"));
+          // collapse code for vscode
+    }
+    SEQ_THREE_KEYS(KC_D, KC_D, KC_S) {
+        SEND_STRING("https://start.duckduckgo.com\n");
+    }
+    SEQ_TWO_KEYS(KC_A, KC_S) {
+        register_code(KC_LGUI);
+        register_code(KC_S);
+        unregister_code(KC_S);
+        unregister_code(KC_LGUI);
+    }
+  }
 };
 
 layer_state_t layer_state_set_user(layer_state_t state) {
@@ -204,13 +188,19 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  static uint16_t my_hash_timer;
   switch (keycode) {
-    case DBL_CLICK:
-      if (record->event.pressed) {
-          register_code16(KC_BTN1);
-          unregister_code16(KC_BTN1);
+    case MY_HASH:
+      if(record->event.pressed) {
+        my_hash_timer = timer_read();
+        register_code(KC_LCTL); // Change the key to be held here
+      } else {
+        unregister_code(KC_LCTL); // Change the key that was held here, too!
+        if (timer_elapsed(my_hash_timer) < TAPPING_TERM) {
+          SEND_STRING("#"); // Change the character(s) to be sent on tap here
+        }
       }
-      return false;
+      return false; // We handled this keypress
     case QWERTY:
       if (record->event.pressed) {
         set_single_persistent_default_layer(_QWERTY);

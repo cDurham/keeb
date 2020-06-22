@@ -8,14 +8,17 @@
 #define SPLIT_USB_DETECT
 #define FLIP_HALF
 
-#define TAPPING_TERM 175
-
 // Auto Shift settings
-#define AUTO_SHIFT_TIMEOUT 165
-/* By default, Auto Shift is disabled for any key
+// #define AUTO_SHIFT_TIMEOUT 165
+/* 
+ * By default, Auto Shift is disabled for any key
  * press that is accompanied by one or more modifiers.
- * DEFAULT STATE IS REMOVED (or commented out)
  */
-#define AUTO_SHIFT_MODIFIERS
+// #define AUTO_SHIFT_MODIFIERS
 
-// #define LEADER_TIMEOUT 300
+#define TAPPING_TERM 200
+/**
+ * resets the timeout after each key is tapped
+ */
+#define LEADER_PER_KEY_TIMING
+#define LEADER_TIMEOUT 300
