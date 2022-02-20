@@ -49,6 +49,16 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 #define TEXT MO(_TEXT)
 #define ADJUST MO(_ADJUST)
 
+#define SFTENT MT(MOD_RSFT, KC_ENT)
+#define SFT_N MT(MOD_LSFT, KC_N)
+#define CTRL_T MT(MOD_LCTL, KC_T)
+#define ALT_S MT(MOD_LALT, KC_S)
+#define LOW_SPC LT(LOWER, KC_SPC)
+#define HI_SPC LT(RAISE, KC_SPC)
+#define SFT_A MT(MOD_RSFT, KC_A)
+#define CTL_E MT(MOD_RCTL, KC_E)
+#define ALT_O MT(MOD_RALT, KC_O)
+#define LSFT_DEL MT(MOD_LSFT, KC_DEL)
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Qwerty
  * ,---------------------------------------s--------------------------------------------.
@@ -63,10 +73,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ctlesc - left control when held, esc when tapped
  */
 [_QWERTY] = LAYOUT_ortho_4x12(
-   KC_TAB,  KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_DEL, \
-   LCTL_T(KC_ESC),  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, \
-   KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M, KC_COMM, KC_DOT,  KC_SLSH, KC_ENT, \
-   _______,  KC_LCTL, KC_LALT, KC_LGUI, LOWER, KC_SPC,  KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
+  KC_TAB,  KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_BSPC, \
+  LCTL_T(KC_ESC),  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, \
+  LSFT_DEL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M, KC_COMM, KC_DOT,  KC_SLSH, SFTENT, \
+  KC_LEAD, KC_LCTL, KC_LALT, KC_LGUI, KC_DEL, LOW_SPC, HI_SPC,  MY_HASH, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
 ),
 
 /* QGMLWB
@@ -81,15 +91,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  * ctlesc - left control when held, esc when tapped
  */
-#define SFTENT MT(MOD_RSFT, KC_ENT)
-#define SFT_N MT(MOD_LSFT, KC_N)
-#define CTRL_T MT(MOD_LCTL, KC_T)
-#define ALT_S MT(MOD_LALT, KC_S)
-#define LOW_SPC LT(LOWER, KC_SPC)
-#define HI_SPC LT(RAISE, KC_SPC)
-#define SFT_A MT(MOD_RSFT, KC_A)
-#define CTL_E MT(MOD_RCTL, KC_E)
-#define ALT_O MT(MOD_RALT, KC_O)
 [_QGMLWB] = LAYOUT_ortho_4x12(
    KC_TAB,  KC_Q,    KC_G,    KC_M,    KC_L,    KC_W,    KC_B,   KC_Y,    KC_U,    KC_V,    KC_SCLN, KC_BSPC, \
    KC_ESC,  KC_D,    ALT_S,   CTRL_T,  SFT_N,   KC_R,    KC_I,   SFT_A,   CTL_E,   ALT_O,   KC_H,    KC_QUOT, \
@@ -121,7 +122,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * | lAlt | Lshft| Left | Down | Right| Undo |      | LCTL |      |      |      |  \   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |  CUT | COPY | PSTE | Redo |      |      |      |      |      |      |
+ * |      |      |  CUT | COPY | PSTE QWERTY Redo |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |      |             |      | Next | Vol- | Vol+ | Play |
  * `-----------------------------------------------------------------------------------'
@@ -131,7 +132,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_GRV,  _______, CTL_T(KC_HOME), KC_UP,    KC_END,  _______, _______, KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSPC, \
   KC_LALT, KC_LSFT, KC_LEFT, KC_DOWN,  KC_RGHT, LCTL(KC_Z), _______, KC_LCTL, _______, _______, _______, KC_BSLS, \
   _______, _______, LCTL(KC_X), LCTL(KC_C), LCTL(KC_V), LCTL(KC_Y), _______, _______, _______, _______, _______, _______, \
-  _______, _______, _______, _______,  _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY \
+  QWERTY, _______, _______, _______,  _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY \
 ),
 
 /* Adjust (Lower + Raise)
