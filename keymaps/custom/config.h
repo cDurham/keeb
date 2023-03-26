@@ -22,3 +22,6 @@
  */
 #define LEADER_PER_KEY_TIMING
 #define LEADER_TIMEOUT 300
+
+
+#define LAYER_STATE_32BIT
