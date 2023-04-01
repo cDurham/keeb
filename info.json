@@ -1,6 +1,8 @@
 {
+  "manufacturer": "Chris Durham",
   "keyboard_name": "Let's Split",
   "url": "",
+  "bootloader": "caterina",
   "maintainer": "qmk",
   "width": 13,
   "height": 4,
@@ -8,6 +10,15 @@
     "vid": "0x6F77",
     "pid": "0x0002",
     "device_version": "0.0.2"
+  },
+  "features": {
+    "bootmagicEnable": false,
+    "bootmagic": true,
+    "command": false,
+    "console": false,
+    "extrakey": false,
+    "mousekey": false,
+    "nkro": true
   },
   "layouts": {
     "LAYOUT": {
